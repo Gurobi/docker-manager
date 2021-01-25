@@ -102,16 +102,19 @@ networks:
 
 ```
 
-Run `docker-compose up compute`
+Run `docker-compose up` from the directory where the `docker-compose.yml` file was saved to download and start all the containers.
 
->You can scale `gurobi/compute` instances using the [scale](https://docs.docker.com/compose/reference/scale/) parameter in docker-compose:
-> `$ docker-compose up --scale compute=2`
-
-Then you can go to http://localhost:61080/manager and login using the default credentials:
+Then you can go to http://localhost:61080/manager and log in using the default credentials:
 ```
     standard user: gurobi / pass
     administrator: admin / admin
     system administrator: sysadmin / cluster
+
+```
+
+Note that you can scale `gurobi/compute` instances using the [scale](https://docs.docker.com/compose/reference/scale/) flag:
+```
+$ docker-compose up --scale compute=2
 
 ```
 
