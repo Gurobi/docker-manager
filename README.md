@@ -5,8 +5,12 @@ Maintained by: [Gurobi Optimization](https://www.gurobi.com)
 Where to get help: [Gurobi Support](https://www.gurobi.com/support/), [Gurobi Documentation](https://www.gurobi.com/documentation/)
 
 # Supported tags and respective Dockerfile links
-## Simple Tags
-* [9.1.1, latest](https://github.com/Gurobi/docker-manager/blob/master/9.1.1/Dockerfile)
+
+* [9.1.2, latest](https://github.com/Gurobi/docker-manager/blob/master/9.1.2/Dockerfile)
+* [9.1.1](https://github.com/Gurobi/docker-manager/blob/master/9.1.1/Dockerfile)
+
+When building a production application, we recommend using an explicit version number instead of the `latest` tag.
+This way, you are in control of the upgrade process of your application.
 
 # Quick reference (cont.)
 
@@ -43,21 +47,32 @@ You will need to specify a set of properties to connect to a license server.  Yo
 
 * Mounting the client license file:
 You can store connection parameters in a client license file (typically called `gurobi.lic`) 
-and mount it to the container. This option provides a simple approach for testing.
+and mount it to the container. 
+This option provides a simple approach for testing with Docker.
+When using Kubernetes, the license file can be stored as a secret and mounted in the container.
 
 * Setting parameters through environment variables: Please contact Gurobi support for details.
 
  
 ## How to use this image?
-### Start a `cluster manager` server instance
+### Using Docker
+
+The following command starts a Cluster Manager instance and connects to a MongoDB database
 `$ docker run gurobi/manager --database=MONGO_DB_URL`
 
-... where `MONGO_DB_URL` is a valid Mongo Database URL
+Then you can go to http://localhost:61080/manager and log in using the default credentials:
+```
+    standard user: gurobi / pass
+    administrator: admin / admin
+    system administrator: sysadmin / cluster
 
->Note: The `Cluster Manager` needs a database and at least
-one node to be able to optimize models.
+```
 
-### ... via docker stack deploy or docker-compose
+However, this is for testing only because without at least one Compute Server node, you
+will not be able to submit optimization jobs. This is why using Docker Compose or Kubernetes
+is necessary as the deployment scripts will start all the required components (see below).
+
+### Using Docker Compose
 Example `docker-compose.yml` for a cluster manager:
 
 ```
@@ -118,8 +133,7 @@ $ docker-compose up --scale compute=2
 
 ```
 
-
-## ... via Kubernetes deployment
+## Using Kubernetes
 
 If you want to mount a specific license with Kubernetes, it can be done using a secret. 
 
