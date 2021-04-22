@@ -54,8 +54,8 @@ When using Kubernetes, the license file can be stored as a secret and mounted in
 * Setting parameters through environment variables: Please contact Gurobi support for details.
 
  
-## How to use this image?
-### Using Docker
+# How to use this image?
+## Using Docker
 
 The following command starts a Cluster Manager instance and connects to a MongoDB database
 `$ docker run gurobi/manager --database=MONGO_DB_URL`
@@ -72,7 +72,7 @@ However, this is for testing only because without at least one Compute Server no
 will not be able to submit optimization jobs. This is why using Docker Compose or Kubernetes
 is necessary as the deployment scripts will start all the required components (see below).
 
-### Using Docker Compose
+## Using Docker Compose
 Example `docker-compose.yml` for a cluster manager:
 
 ```
