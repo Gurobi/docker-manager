@@ -38,25 +38,32 @@ interactive and non-interactive optimization tasks.
  
 ## Getting a Gurobi license
 
+The [Web License Service](https://www.gurobi.com/web-license-service/) (WLS) is a new Gurobi licensing service 
+for containerized environments (Docker, Kubernetes...). Gurobi components can automatically request and renew license tokens to 
+the WLS servers available in several regions worldwide. WLS only requires that your container has access to the 
+Internet. Commercial users can request an evaluation and academic users can request a free license.
+Please register to access the [Web License Manager](https://license.gurobi.com) and read the
+[documentation](https://license.gurobi.com/manager/doc/overview)
+
+Note that other standard license types (NODE, Academic) do not work with containers.
 Please contact your sales representative at [sales@gurobi.com](mailto:sales@gurobi.com) to discuss licensing options. 
-Note that standard license types (NODE, Academic) do not work with Docker.
 
 ## Using the client license
 
-You will need to specify a set of properties to connect to a license server.  You have a few options:
-
+The Cluster Manager itself does not need a license, but the Compute Server nodes will, and there are two options:
 * Mounting the client license file:
 You can store connection parameters in a client license file (typically called `gurobi.lic`) 
 and mount it to the container. 
 This option provides a simple approach for testing with Docker.
 When using Kubernetes, the license file can be stored as a secret and mounted in the container.
 
-* Setting parameters through environment variables: Please contact Gurobi support for details.
+* Setting parameters through environment variables for a WLS license: GRB_WLSACCESSID, GRB_WLSSECRET, and GRB_LICENSEID.
+These variables are used to pass the access ID, the secret, and the license ID respectively.
 
 We do not recommend adding the license file to the Docker image itself. It is not a flexible 
 solution as you may not reuse the same image with different settings. More importantly, it is not secure
 as some license files need to contain credentials in the form of API keys that should remain private.
- 
+
 # How to use this image?
 ## Using Docker
 
@@ -145,7 +152,7 @@ kubectl create secret generic gurobi-lic --from-file="gurobi.lic=$PWD/gurobi.lic
 ```
 
 Then you can start multiple pods for the Cluster Manager, the Mongo Database, and the Compute Server nodes
-A simple deployment file is provided as a [reference](https://github.com/Gurobi/docker-manager/blob/master/9.1.2/k8s.yaml), 
+A simple deployment file is provided as an [example](https://github.com/Gurobi/docker-manager/blob/master/9.1.2/k8s.yaml), 
 and should only be used for an evaluation. 
 
 ```
@@ -207,6 +214,21 @@ Finally, you can go to http://localhost:61080/manager and log in using the defau
     system administrator: sysadmin / cluster
 
 ```
+
+Gurobi Compute Server will run the optimization jobs which are CPU-intensive tasks. To get better 
+performance, we recommend deploying the Compute Server pods on dedicated Kubernetes worker nodes with 
+high-end CPUs, adequate memory, and avoid resource contention: 
+- By using a [daemon set](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/), 
+  we run one and only one Gurobi Compute Server per worker node as an agent. Also, if you scale up or down
+  the number of nodes in your node group, it will automatically adjust the number of Compute Server nodes.
+- Then, the node selector has a label ``app: compute`` to indicate that the daemon will only run on the 
+  specified node group.
+- Finally, by defining a [taint](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) 
+  ``app:compute`` on the selected worker nodes, and applying the tolerations 
+   to the daemon set, we make sure no other pods will run on these nodes, unless they have the required toleration.
+
+A simple deployment file is provided as an
+[example](https://github.com/Gurobi/docker-manager/blob/master/9.1.2/daemonset.yaml).
 
 # License
 
