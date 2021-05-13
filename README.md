@@ -151,9 +151,12 @@ If you want to mount a specific license with Kubernetes, it can be done using a 
 kubectl create secret generic gurobi-lic --from-file="gurobi.lic=$PWD/gurobi.lic"
 ```
 
-Then you can start multiple pods for the Cluster Manager, the Mongo Database, and the Compute Server nodes
-A simple deployment file is provided as an [example](https://github.com/Gurobi/docker-manager/blob/master/9.1.2/k8s.yaml), 
-and should only be used for an evaluation. 
+Then you can start multiple pods for the Cluster Manager, the Mongo Database, and the Compute Server nodes.
+A simple deployment file is provided as an 
+[example](https://github.com/Gurobi/docker-manager/blob/master/9.1.2/k8s.yaml).
+To keep the demonstration simple, this deployment file will not persist the database.
+If you wish to do so, please refer to the [MongoDB documentation](https://www.mongodb.com/kubernetes)
+or a hosted solution (for example [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)).
 
 ```
 kubectl apply -f k8s.yaml
@@ -207,7 +210,10 @@ As well as the logs of one of the Compute Server nodes:
 2021-04-22T02:57:33Z - info  : *** WLS license - registered to gurobi@gurobi.com ***
 ```
 
-Finally, you can go to http://localhost:61080/manager and log in using the default credentials:
+Finally, you can retrieve the load balancer ingress of the ``gurobi-manager`` service
+and open your browser to the exposed url and port. If you have applied the deployment file
+to a local environment, you can go to ``http://localhost:61080/manager`` and log in using the 
+default credentials:
 ```
     standard user: gurobi / pass
     administrator: admin / admin
@@ -222,7 +228,7 @@ high-end CPUs, adequate memory, and avoid resource contention:
   we run one and only one Gurobi Compute Server per worker node as an agent. Also, if you scale up or down
   the number of nodes in your node group, it will automatically adjust the number of Compute Server nodes.
 - Then, the node selector has a label ``app: compute`` to indicate that the daemon will only run on the 
-  specified node group.
+  dedicated worker nodes.
 - Finally, by defining a [taint](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/) 
   ``app:compute`` on the selected worker nodes, and applying the tolerations 
    to the daemon set, we make sure no other pods will run on these nodes, unless they have the required toleration.
