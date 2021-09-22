@@ -47,8 +47,10 @@ COPY --from=buildmanager /opt/gurobi_server/linux64/EULA.pdf ./linux64/EULA.pdf
 ENV GRB_HOME=/opt/gurobi_server/linux64
 ENV PATH $GRB_HOME/bin:$PATH
 WORKDIR $GRB_HOME/bin
+# changes group permissions to run as a non-root user for better security
 RUN chgrp -R 0 /opt/gurobi_server/linux64/bin && \
     chmod -R g=u /opt/gurobi_server/linux64/bin
+# User to run the container
 USER 1001
 # expose command line
 ENTRYPOINT ["grb_rsm", "--port=61080","--console-ts"]
