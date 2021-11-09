@@ -83,7 +83,7 @@ spec:
     spec:
       containers:
         - name: gurobi-manager
-          image: gurobi/manager:9.1.2
+          image: gurobi/manager:9.5.0
           ports:
             - containerPort: 61080
           env:
@@ -114,7 +114,7 @@ spec:
             optional: true
       containers:
         - name: gurobi-compute
-          image: gurobi/compute:9.1.2
+          image: gurobi/compute:9.5.0
           ports:
             - containerPort: 61000
           volumeMounts:

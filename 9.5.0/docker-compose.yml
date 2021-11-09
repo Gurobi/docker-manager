@@ -9,7 +9,7 @@ services:
       - back-tier
 
   manager:
-    image: gurobi/manager:9.1.2
+    image: gurobi/manager:9.5.0
     restart: always
     depends_on:
       - mongodb
@@ -20,7 +20,7 @@ services:
       - back-tier
 
   compute:
-    image: gurobi/compute:9.1.2
+    image: gurobi/compute:9.5.0
     restart: always
     depends_on:
       - manager
