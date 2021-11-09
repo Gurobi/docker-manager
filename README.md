@@ -7,7 +7,7 @@ Where to get help: [Gurobi Support](https://www.gurobi.com/support/), [Gurobi Do
 # Supported tags and respective Dockerfile links
 
 * [9.5.0, latest](https://github.com/Gurobi/docker-manager/blob/master/9.5.0/Dockerfile)
-* [9.5.0](https://github.com/Gurobi/docker-manager/blob/master/9.5.0/Dockerfile)
+* [9.1.2](https://github.com/Gurobi/docker-manager/blob/master/9.1.2/Dockerfile)
 
 When building a production application, we recommend using an explicit version number instead of the `latest` tag.
 This way, you are in control of the upgrade process of your application.
@@ -154,7 +154,7 @@ kubectl create secret generic gurobi-lic --from-file="gurobi.lic=$PWD/gurobi.lic
 
 Then you can start multiple pods for the Cluster Manager, the Mongo Database, and the Compute Server nodes.
 A simple deployment file is provided as an 
-[example](https://github.com/Gurobi/docker-manager/blob/master/9.1.2/k8s.yaml).
+[example](https://github.com/Gurobi/docker-manager/blob/master/9.5.0/k8s.yaml).
 To keep the demonstration simple, this deployment file will not persist the database.
 If you wish to do so, please refer to the [MongoDB documentation](https://www.mongodb.com/kubernetes)
 or a hosted solution (for example [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)).
@@ -178,7 +178,7 @@ Then you can access the logs of one instance of the Cluster Manager:
 % kubectl logs gurobi-manager-79dcbf5b74-c9dfv
 2021-04-22T02:57:28Z - info  : Gurobi Cluster Manager starting...
 2021-04-22T02:57:28Z - info  : Platform is linux
-2021-04-22T02:57:28Z - info  : Version is 9.1.2 (build v9.1.2rc0)
+2021-04-22T02:57:28Z - info  : Version is 9.5.0 (build v9.5.0rc0)
 2021-04-22T02:57:28Z - info  : Running in a Docker container 92b6ab343ae877b932aa98155b202bdc4b8bd36d66c4d94f38cf85e7e46ade0d
 2021-04-22T02:57:28Z - info  : Connecting to database grb_rsm on 10.107.136.76:27017...
 2021-04-22T02:57:28Z - info  : Connected to database grb_rsm (version 4.2.13, host gurobi-mongo-7cb74f9b7-c829s)
@@ -192,7 +192,7 @@ As well as the logs of one of the Compute Server nodes:
 % kubectl logs gurobi-compute-674f8dcbf4-v27nn
 2021-04-22T02:57:32Z - info  : Gurobi Remote Services starting...
 2021-04-22T02:57:32Z - info  : Platform is linux
-2021-04-22T02:57:32Z - info  : Version is 9.1.2 (build v9.1.2rc0)
+2021-04-22T02:57:32Z - info  : Version is 9.5.0 (build v9.5.0rc0)
 2021-04-22T02:57:32Z - info  : Running in a Docker container 293626443b09bb0d19a3d97e918ea0d11d2ae0cb92be60ae944c92848735471e
 2021-04-22T02:57:32Z - info  : Variable GRB_LICENSE_FILE is not set
 2021-04-22T02:57:32Z - info  : Using license file /opt/gurobi/gurobi.lic
