@@ -6,8 +6,8 @@ Where to get help: [Gurobi Support](https://www.gurobi.com/support/), [Gurobi Do
 
 # Supported tags and respective Dockerfile links
 
-* [9.5.0, latest](https://github.com/Gurobi/docker-manager/blob/master/9.5.0/Dockerfile)
-* [9.1.2](https://github.com/Gurobi/docker-manager/blob/master/9.1.2/Dockerfile)
+* [9.5.1, latest](https://github.com/Gurobi/docker-manager/blob/master/9.5.1/Dockerfile)
+* [9.5.0](https://github.com/Gurobi/docker-manager/blob/master/9.5.0/Dockerfile)
 
 When building a production application, we recommend using an explicit version number instead of the `latest` tag.
 This way, you are in control of the upgrade process of your application.
@@ -154,7 +154,7 @@ kubectl create secret generic gurobi-lic --from-file="gurobi.lic=$PWD/gurobi.lic
 
 Then you can start multiple pods for the Cluster Manager, the Mongo Database, and the Compute Server nodes.
 A simple deployment file is provided as an 
-[example](https://github.com/Gurobi/docker-manager/blob/master/9.5.0/k8s.yaml).
+[example](https://github.com/Gurobi/docker-manager/blob/master/9.5.1/k8s.yaml).
 To keep the demonstration simple, this deployment file will not persist the database.
 If you wish to do so, please refer to the [MongoDB documentation](https://www.mongodb.com/kubernetes)
 or a hosted solution (for example [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)).
@@ -178,7 +178,7 @@ Then you can access the logs of one instance of the Cluster Manager:
 % kubectl logs gurobi-manager-79dcbf5b74-c9dfv
 22021-11-10T20:49:41Z - info  : Gurobi Cluster Manager starting...
 2021-11-10T20:49:41Z - info  : Platform is linux
-2021-11-10T20:49:41Z - info  : Version is 9.5.0 (build v9.5.0rc5)
+2021-11-10T20:49:41Z - info  : Version is 9.5.1 (build v9.5.1rc5)
 2021-11-10T20:49:41Z - info  : Running in a Docker container b84dec017bb7ef5e49bc78e345fe3430aa84d0019058d02b73394306878a1996
 2021-11-10T20:49:41Z - info  : Connecting to database grb_rsm on 10.102.3.164:27017...
 2021-11-10T20:49:41Z - info  : Connected to database grb_rsm (version 4.2.17, host gurobi-mongo-9d84db4d6-8fh79)
@@ -194,7 +194,7 @@ As well as the logs of one of the Compute Server nodes:
  % kubectl logs gurobi-manager-7bc57cb58-kjqqz
 2021-11-10T20:49:41Z - info  : Gurobi Remote Services starting...
 2021-11-10T20:49:41Z - info  : Platform is linux
-2021-11-10T20:49:41Z - info  : Version is 9.5.0 (build v9.5.0rc5)
+2021-11-10T20:49:41Z - info  : Version is 9.5.1 (build v9.5.1rc5)
 2021-11-10T20:49:41Z - info  : Running in a Docker container 31ea755e93164c844f3ebe82406f56481dbb25feb25c32cd4e4372c9f8b88a99
 2021-11-10T20:49:41Z - info  : Variable GRB_LICENSE_FILE is not set
 2021-11-10T20:49:41Z - info  : Using license file /opt/gurobi/gurobi.lic
@@ -205,7 +205,7 @@ As well as the logs of one of the Compute Server nodes:
 2021-11-10T20:49:41Z - info  : Using data directory /opt/gurobi_server/linux64/bin/data
 2021-11-10T20:49:41Z - info  : Data store created
 2021-11-10T20:49:41Z - info  : Node ID is c5974742-b84f-40e9-bb11-7441721cf802
-2021-11-10T20:49:41Z - info  : Available runtimes: [8.0.0 8.0.1 8.1.0 8.1.1 9.0.0 9.0.1 9.0.2 9.0.3 9.1.0 9.1.1 9.1.2 9.5.0]
+2021-11-10T20:49:41Z - info  : Available runtimes: [8.0.0 8.0.1 8.1.0 8.1.1 9.0.0 9.0.1 9.0.2 9.0.3 9.1.0 9.1.1 9.1.2 9.5.0 9.5.1]
 2021-11-10T20:49:41Z - info  : Accepting worker registration on port 46457...
 2021-11-10T20:49:41Z - info  : Public root is /opt/gurobi_server/linux64/resources/grb_rs/public
 2021-11-10T20:49:41Z - info  : Starting API server (HTTP) on port 61000...
@@ -238,7 +238,7 @@ high-end CPUs, adequate memory, and avoid resource contention:
    to the daemon set, we make sure no other pods will run on these nodes, unless they have the required toleration.
 
 A simple deployment file is provided as an
-[example](https://github.com/Gurobi/docker-manager/blob/master/9.5.0/daemonset.yaml).
+[example](https://github.com/Gurobi/docker-manager/blob/master/9.5.1/daemonset.yaml).
 
 # License
 
