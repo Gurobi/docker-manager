@@ -5,6 +5,7 @@
 #
 # 2- Deploy the cluster manager with compute server nodes
 #    kubectl apply -f k8s.yaml
+#### To keep the demonstration simple, this deployment file will not persist the database
 
 apiVersion: v1
 kind: Service
@@ -86,6 +87,22 @@ spec:
           image: gurobi/manager:9.5.1
           ports:
             - containerPort: 61080
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+            httpGet:
+              port: 61080
+              path: /api/v1/ping
+          readinessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+            httpGet:
+              port: 61080
+              path: /api/v1/ping
           env:
             - name: GRB_DB_URI
               value: "mongodb://$(GUROBI_MONGO_SERVICE_HOST):$(GUROBI_MONGO_SERVICE_PORT)"
@@ -117,6 +134,22 @@ spec:
           image: gurobi/compute:9.5.1
           ports:
             - containerPort: 61000
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+            httpGet:
+              port: 61000
+              path: /api/v1/ping
+          readinessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+            httpGet:
+              port: 61000
+              path: /api/v1/ping
           volumeMounts:
             - name: gurobi-lic
               mountPath: "/opt/gurobi"
