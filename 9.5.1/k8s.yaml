@@ -5,7 +5,8 @@
 #
 # 2- Deploy the cluster manager with compute server nodes
 #    kubectl apply -f k8s.yaml
-#### To keep the demonstration simple, this deployment file will not persist the database
+#### To keep the demonstration simple, this deployment file will not persist the database.
+#### If you wish to do so, please refer to the MongoDB documentation or a hosted solution (for example MongoDB Atlas).
 
 apiVersion: v1
 kind: Service
