@@ -1,0 +1,53 @@
+#
+# This Kubernetes specification file shows how to deploy Gurobi Compute Server
+# nodes as a daemon set on dedicated worker nodes:
+#  - by using a daemon set, we run one and only one Gurobi Compute Server per worker node as an agent
+#  - then, the node selector indicates that the daemon will only run on the specified nodes
+#  - finally by defining a taint app:compute on the worker nodes, and applying the tolerations
+#    to the daemon set, we make sure no other pods will run on these nodes.
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: gurobi-compute
+  labels:
+    app: gurobi-compute
+spec:
+  selector:
+    matchLabels:
+      app: gurobi-compute
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: gurobi-compute
+    spec:
+      volumes:
+        - name: gurobi-lic
+          secret:
+            secretName: gurobi-lic
+      containers:
+        - name: gurobi-compute
+          image: gurobi/compute:10.0.0beta
+          ports:
+            - containerPort: 61000
+          volumeMounts:
+            - name: gurobi-lic
+              mountPath: "/opt/gurobi"
+              readOnly: true
+          env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          args: [ "--manager","http://$(GUROBI_MANAGER_SERVICE_HOST):$(GUROBI_MANAGER_SERVICE_PORT)", "--hostname", "$(MY_POD_IP)"]
+      nodeSelector:
+        app: compute
+      tolerations:
+        - key: "app"
+          operator: "Equal"
+          value: "compute"
+          effect: "NoSchedule"
