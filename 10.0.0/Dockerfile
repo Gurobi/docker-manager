@@ -3,8 +3,8 @@
 #
 
 FROM ubuntu:20.04 as buildmanager
-ARG GRB_VERSION=10.0.0beta1
-ARG GRB_SHORT_VERSION=10.0beta1
+ARG GRB_VERSION=10.0.0
+ARG GRB_SHORT_VERSION=10.0
 # install manager package and copy the files
 WORKDIR /opt
 
@@ -13,8 +13,7 @@ RUN apt-get update \
        ca-certificates  \
        wget \
     && update-ca-certificates \
-    && wget -v https://download.gurobi.com/api/public/dl/mmH4PU3s/gurobi_server10.0.0beta1_linux64.tar.gz \
-#    && wget -v https://packages.gurobi.com/${GRB_SHORT_VERSION}/gurobi_server${GRB_VERSION}_linux64.tar.gz \
+    && wget -v https://packages.gurobi.com/${GRB_SHORT_VERSION}/gurobi_server${GRB_VERSION}_linux64.tar.gz \
     && tar -xvf gurobi_server${GRB_VERSION}_linux64.tar.gz  \
     && rm -f gurobi_server${GRB_VERSION}_linux64.tar.gz \
     && mv -f gurobi_server* gurobi_server \
@@ -24,7 +23,7 @@ RUN apt-get update \
 
 FROM ubuntu:20.04 AS packagemanager
 
-ARG GRB_VERSION=10.0.0beta1
+ARG GRB_VERSION=10.0.0
 
 LABEL vendor="Gurobi"
 LABEL version=${GRB_VERSION}

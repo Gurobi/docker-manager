@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
         - name: gurobi-mongo
-          image: mongo:4.2
+          image: mongo:latest
           args:
             - --bind_ip
             - 0.0.0.0
@@ -85,7 +85,7 @@ spec:
     spec:
       containers:
         - name: gurobi-manager
-          image: gurobi/manager:10.0.0beta
+          image: gurobi/manager:10.0.0
           ports:
             - containerPort: 61080
           livenessProbe:
@@ -132,7 +132,7 @@ spec:
             optional: true
       containers:
         - name: gurobi-compute
-          image: gurobi/compute:10.0.0beta
+          image: gurobi/compute:10.0.0
           ports:
             - containerPort: 61000
           livenessProbe:

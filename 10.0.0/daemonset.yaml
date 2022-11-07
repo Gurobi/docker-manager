@@ -31,7 +31,7 @@ spec:
             secretName: gurobi-lic
       containers:
         - name: gurobi-compute
-          image: gurobi/compute:10.0.0beta
+          image: gurobi/compute:10.0.0
           ports:
             - containerPort: 61000
           volumeMounts:
