@@ -6,9 +6,9 @@ Where to get help: [Gurobi Support](https://www.gurobi.com/support/), [Gurobi Do
 
 # Supported tags and respective Dockerfile links
 
+* [10.0.0](https://github.com/Gurobi/docker-manager/blob/master/10.0.0/Dockerfile)
 * [9.5.2, latest](https://github.com/Gurobi/docker-manager/blob/master/9.5.2/Dockerfile)
 * [9.5.1](https://github.com/Gurobi/docker-manager/blob/master/9.5.1/Dockerfile)
-* [9.5.0](https://github.com/Gurobi/docker-manager/blob/master/9.5.0/Dockerfile)
 
 When building a production application, we recommend using an explicit version number instead of the `latest` tag.
 This way, you are in control of the upgrade process of your application.
@@ -155,7 +155,7 @@ kubectl create secret generic gurobi-lic --from-file="gurobi.lic=$PWD/gurobi.lic
 
 Then you can start multiple pods for the Cluster Manager, the Mongo Database, and the Compute Server nodes.
 A simple deployment file is provided as an 
-[example](https://github.com/Gurobi/docker-manager/blob/master/9.5.2/k8s.yaml).
+[example](https://github.com/Gurobi/docker-manager/blob/master/10.0.0/k8s.yaml).
 To keep the demonstration simple, this deployment file will not persist the database.
 If you wish to do so, please refer to the [MongoDB documentation](https://www.mongodb.com/kubernetes)
 or a hosted solution (for example [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)).
@@ -177,42 +177,46 @@ gurobi-manager-79dcbf5b74-wcqhj            1/1     Running   0          8m17s
 Then you can access the logs of one instance of the Cluster Manager:
 ```
 % kubectl logs gurobi-manager-79dcbf5b74-c9dfv
-22021-11-10T20:49:41Z - info  : Gurobi Cluster Manager starting...
-2021-11-10T20:49:41Z - info  : Platform is linux
-2021-11-10T20:49:41Z - info  : Version is 9.5.2 (build v9.5.2rc5)
-2021-11-10T20:49:41Z - info  : Running in a Docker container b84dec017bb7ef5e49bc78e345fe3430aa84d0019058d02b73394306878a1996
-2021-11-10T20:49:41Z - info  : Connecting to database grb_rsm on 10.102.3.164:27017...
-2021-11-10T20:49:41Z - info  : Connected to database grb_rsm (version 4.2.17, host gurobi-mongo-9d84db4d6-8fh79)
-2021-11-10T20:49:41Z - info  : Checking 0 cluster nodes
-2021-11-10T20:49:41Z - info  : Authentication Provider set to Gurobi Authentication Provider 
-2021-11-10T20:49:41Z - info  : Creating proxy with MaxIdleConns=200 MaxIdleConnsPerHost=32 IdleConnTimeout=130
-2021-11-10T20:49:41Z - info  : Public root is /opt/gurobi_server/linux64/resources/grb_rsm/public
-2021-11-10T20:49:41Z - info  : Starting Cluster Manager server (HTTP) on port 61080...
+2022-11-10T14:50:46Z - info  : Gurobi Cluster Manager starting...
+2022-11-10T14:50:46Z - info  : Platform is linux
+2022-11-10T14:50:46Z - info  : Version is 10.0.0 (build v10.0.0rc2)
+2022-11-10T14:50:46Z - info  : Connecting to database grb_rsm on 10.102.157.222:27017...
+2022-11-10T14:50:46Z - info  : Connected to database grb_rsm (version 6.0.2, host gurobi-mongo-7474f8d557-k7r59)
+2022-11-10T14:50:46Z - info  : Default gurobi user created
+2022-11-10T14:50:46Z - info  : Default admin user created
+2022-11-10T14:50:46Z - info  : Default sysadmin user created
+2022-11-10T14:50:46Z - info  : Default settings created
+2022-11-10T14:50:46Z - info  : Checking 0 cluster nodes
+2022-11-10T14:50:46Z - info  : Authentication Provider set to Gurobi Authentication Provider 
+2022-11-10T14:50:46Z - info  : Creating proxy with MaxIdleConns=200 MaxIdleConnsPerHost=32 IdleConnTimeout=130
+2022-11-10T14:50:46Z - info  : Public root is /opt/gurobi_server/linux64/resources/grb_rsm/public
+2022-11-10T14:50:46Z - info  : Starting Cluster Manager server (HTTP) on port 61080...
+2022-11-10T14:52:15Z - info  : User sysadmin:*****, logged in
 ```
 
 As well as the logs of one of the Compute Server nodes:
 ```
- % kubectl logs gurobi-manager-7bc57cb58-kjqqz
-2021-11-10T20:49:41Z - info  : Gurobi Remote Services starting...
-2021-11-10T20:49:41Z - info  : Platform is linux
-2021-11-10T20:49:41Z - info  : Version is 9.5.2 (build v9.5.2rc5)
-2021-11-10T20:49:41Z - info  : Running in a Docker container 31ea755e93164c844f3ebe82406f56481dbb25feb25c32cd4e4372c9f8b88a99
-2021-11-10T20:49:41Z - info  : Variable GRB_LICENSE_FILE is not set
-2021-11-10T20:49:41Z - info  : Using license file /opt/gurobi/gurobi.lic
-2021-11-10T20:49:41Z - info  : Server starting WLS license
-2021-11-10T20:49:41Z - info  : Node address is 10.1.0.151:61000
-2021-11-10T20:49:41Z - info  : Node FQN is gurobi-compute-7c7fbcc9b6-xzh25
-2021-11-10T20:49:41Z - info  : Node has 6 cores
-2021-11-10T20:49:41Z - info  : Using data directory /opt/gurobi_server/linux64/bin/data
-2021-11-10T20:49:41Z - info  : Data store created
-2021-11-10T20:49:41Z - info  : Node ID is c5974742-b84f-40e9-bb11-7441721cf802
-2021-11-10T20:49:41Z - info  : Available runtimes: [8.0.0 8.0.1 8.1.0 8.1.1 9.0.0 9.0.1 9.0.2 9.0.3 9.1.0 9.1.1 9.1.2 9.5.0 9.5.1]
-2021-11-10T20:49:41Z - info  : Accepting worker registration on port 46457...
-2021-11-10T20:49:41Z - info  : Public root is /opt/gurobi_server/linux64/resources/grb_rs/public
-2021-11-10T20:49:41Z - info  : Starting API server (HTTP) on port 61000...
-2021-11-10T20:49:41Z - info  : Joining cluster from manager
-2021-11-10T20:49:42Z - info  : Token cb86a325-e1c3-4f16-a3d5-fbd96177e38f, acquired for 5 minutes until 2021-11-10 20:54:41 +0000 UTC
-2021-11-10T20:49:43Z - info  : *** WLS license - registered to gurobi@gurobi.com ***
+ % kubectl logs gurobi-compute-6886d8db4f-mjxm4
+2022-11-10T14:50:36Z - info  : Gurobi Remote Services starting...
+2022-11-10T14:50:36Z - info  : Platform is linux
+2022-11-10T14:50:36Z - info  : Version is 10.0.0 (build v10.0.0rc2)
+2022-11-10T14:50:36Z - info  : Variable GRB_LICENSE_FILE is not set
+2022-11-10T14:50:36Z - info  : Using license file /opt/gurobi/gurobi.lic
+2022-11-10T14:50:36Z - info  : Server starting WLS license
+2022-11-10T14:50:36Z - info  : Node address is 10.1.0.51:61000
+2022-11-10T14:50:36Z - info  : Node FQN is gurobi-compute-6886d8db4f-mjxm4
+2022-11-10T14:50:36Z - info  : Node has 6 cores
+2022-11-10T14:50:36Z - info  : Using data directory /opt/gurobi_server/linux64/bin/data
+2022-11-10T14:50:36Z - info  : Data store created
+2022-11-10T14:50:36Z - info  : WLS container ID mhost:G4RN7PWI Tag 1668091836136834990080
+2022-11-10T14:50:36Z - info  : Node ID is fbbca171-b6bd-4e1f-817e-d959046318cb
+2022-11-10T14:50:36Z - info  : Available runtimes: [10.0.0 9.0.0 9.0.1 9.0.2 9.0.3 9.1.0 9.1.1 9.1.2 9.5.0 9.5.1 9.5.2]
+2022-11-10T14:50:36Z - info  : Public root is /opt/gurobi_server/linux64/resources/grb_rs/public
+2022-11-10T14:50:36Z - info  : Accepting worker registration on port 34151...
+2022-11-10T14:50:36Z - info  : Starting API server (HTTP) on port 61000...
+2022-11-10T14:51:36Z - info  : Joining cluster from manager
+2022-11-10T14:51:36Z - info  : Node will join 10.1.0.52:61000
+2022-11-10T14:51:36Z - info  : Node 10.1.0.52:61000, transition from JOINING to ALIVE
 ```
 
 Finally, you can retrieve the load balancer ingress of the ``gurobi-manager`` service
@@ -239,7 +243,7 @@ high-end CPUs, adequate memory, and avoid resource contention:
    to the daemon set, we make sure no other pods will run on these nodes, unless they have the required toleration.
 
 A simple deployment file is provided as an
-[example](https://github.com/Gurobi/docker-manager/blob/master/9.5.2/daemonset.yaml).
+[example](https://github.com/Gurobi/docker-manager/blob/master/10.0.0/daemonset.yaml).
 
 # License
 
