@@ -181,7 +181,7 @@ Then you can access the logs of one instance of the Cluster Manager:
 % kubectl logs gurobi-manager-79dcbf5b74-c9dfv
 2023-02-01T19:35:30Z - info  : Gurobi Cluster Manager starting...
 2023-02-01T19:35:30Z - info  : Platform is linux
-2023-02-01T19:35:30Z - info  : Version is 10.0.2 (build v10.0.1rc0)
+2023-02-01T19:35:30Z - info  : Version is 10.0.2 (build v10.0.2rc0)
 2023-02-01T19:35:30Z - info  : Connecting to database grb_rsm on 10.96.174.237:27017...
 2023-02-01T19:35:32Z - info  : Connected to database grb_rsm (version 6.0.4, host gurobi-mongo-7474f8d557-bt7tm)
 2023-02-01T19:35:32Z - info  : Checking 0 cluster nodes
