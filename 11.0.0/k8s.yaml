@@ -1,0 +1,163 @@
+# This file deploys Gurobi Cluster Manager and Compute Server Nodes
+#
+# 1- Create the license file as a secret
+#    kubectl create secret generic gurobi-lic --from-file="gurobi.lic=$PWD/gurobi.lic"
+#
+# 2- Deploy the cluster manager with compute server nodes
+#    kubectl apply -f k8s.yaml
+#### To keep the demonstration simple, this deployment file will not persist the database.
+#### If you wish to do so, please refer to the MongoDB documentation or a hosted solution (for example MongoDB Atlas).
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gurobi-mongo
+  labels:
+    name: gurobi-mongo
+spec:
+  ports:
+    - port: 27017
+      targetPort: 27017
+  selector:
+    name: gurobi-mongo
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gurobi-mongo
+  labels:
+    name: gurobi-mongo
+spec:
+  selector:
+    matchLabels:
+      name: gurobi-mongo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: gurobi-mongo
+    spec:
+      containers:
+        - name: gurobi-mongo
+          image: mongo:latest
+          args:
+            - --bind_ip
+            - 0.0.0.0
+            - --dbpath
+            - /var/tmp
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 27017
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "gurobi-manager"
+spec:
+  selector:
+    app: gurobi-manager
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 61080
+      targetPort: 61080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gurobi-manager
+  labels:
+    app: gurobi-manager
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gurobi-manager
+  template:
+    metadata:
+      labels:
+        app: gurobi-manager
+    spec:
+      containers:
+        - name: gurobi-manager
+          image: gurobi/manager:11.0.0
+          ports:
+            - containerPort: 61080
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+            httpGet:
+              port: 61080
+              path: /api/v1/ping
+          readinessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+            httpGet:
+              port: 61080
+              path: /api/v1/ping
+          env:
+            - name: GRB_DB_URI
+              value: "mongodb://$(GUROBI_MONGO_SERVICE_HOST):$(GUROBI_MONGO_SERVICE_PORT)"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gurobi-compute
+  labels:
+    app: gurobi-compute
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gurobi-compute
+  template:
+    metadata:
+      labels:
+        app: gurobi-compute
+    spec:
+      volumes:
+        - name: gurobi-lic
+          secret:
+            secretName: gurobi-lic
+            optional: true
+      containers:
+        - name: gurobi-compute
+          image: gurobi/compute:11.0.0
+          ports:
+            - containerPort: 61000
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+            httpGet:
+              port: 61000
+              path: /api/v1/ping
+          readinessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 5
+            httpGet:
+              port: 61000
+              path: /api/v1/ping
+          volumeMounts:
+            - name: gurobi-lic
+              mountPath: "/opt/gurobi"
+              readOnly: true
+          env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          args: [ "--manager","http://$(GUROBI_MANAGER_SERVICE_HOST):$(GUROBI_MANAGER_SERVICE_PORT)", "--hostname", "$(MY_POD_IP)" ]
