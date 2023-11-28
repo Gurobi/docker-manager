@@ -3,7 +3,7 @@
 #
 
 FROM ubuntu:20.04 as buildmanager
-ARG GRB_VERSION=11.0.0beta
+ARG GRB_VERSION=11.0.0
 ARG GRB_SHORT_VERSION=11.0
 # install manager package and copy the files
 WORKDIR /opt
@@ -13,8 +13,7 @@ RUN apt-get update \
        ca-certificates  \
        wget \
     && update-ca-certificates \
-    && wget -v https://download.gurobi.com/api/public/dl/lrGFBviN/110beta/gurobi_server11.0.0beta_linux64.tar.gz \
-#&& wget -v https://packages.gurobi.com/${GRB_SHORT_VERSION}/gurobi_server${GRB_VERSION}_linux64.tar.gz \
+    && wget -v https://packages.gurobi.com/${GRB_SHORT_VERSION}/gurobi_server${GRB_VERSION}_linux64.tar.gz \
     && tar -xvf gurobi_server${GRB_VERSION}_linux64.tar.gz  \
     && rm -f gurobi_server${GRB_VERSION}_linux64.tar.gz \
     && mv -f gurobi_server* gurobi_server \
