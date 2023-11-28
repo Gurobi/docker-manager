@@ -28,7 +28,7 @@ services:
     networks:
       - back-tier
     volumes:
-      - ./Users/sipe/Documents/gurobi/gurobi-docker/docker-manager/gurobi.lic:/opt/gurobi/gurobi.lic:ro
+      - ./gurobi.lic:/opt/gurobi/gurobi.lic:ro
 
 volumes:
   mongodb:
