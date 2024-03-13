@@ -17,7 +17,7 @@ RUN apt-get update \
     && tar -xvf gurobi_server${GRB_VERSION}_linux64.tar.gz  \
     && rm -f gurobi_server${GRB_VERSION}_linux64.tar.gz \
     && mv -f gurobi_server* gurobi_server \
-    && rm -rf gurobi/linux64/docs
+    && rm -rf gurobi_server/linux64/docs
 
 # After the file renaming, a clean image is built
 
