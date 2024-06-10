@@ -5,20 +5,32 @@
 FROM ubuntu:20.04 as buildmanager
 ARG GRB_VERSION=11.0.0
 ARG GRB_SHORT_VERSION=11.0
+ARG TARGETPLATFORM
+
+# Create a script to determine GRB_PLATFORM based on TARGETPLATFORM
+RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
+        echo "armlinux64" > /platform.txt; \
+      else \
+        echo "linux64" > /platform.txt; \
+    fi
+
+ENV GRB_PLATFORM=${GRB_PLATFORM}
+
 # install manager package and copy the files
 WORKDIR /opt
 
-RUN apt-get update \
+RUN export GRB_PLATFORM=$(cat /platform.txt) && echo $GRB_PLATFORM \
+    &&apt-get update \
     && apt-get install --no-install-recommends -y\
        ca-certificates  \
        wget \
     && update-ca-certificates \
-    && wget -v https://packages.gurobi.com/${GRB_SHORT_VERSION}/gurobi_server${GRB_VERSION}_linux64.tar.gz \
-    && tar -xvf gurobi_server${GRB_VERSION}_linux64.tar.gz  \
-    && rm -f gurobi_server${GRB_VERSION}_linux64.tar.gz \
+    && wget -v https://packages.gurobi.com/${GRB_SHORT_VERSION}/gurobi_server${GRB_VERSION}_$GRB_PLATFORM.tar.gz \
+    && tar -xvf gurobi_server${GRB_VERSION}_$GRB_PLATFORM.tar.gz  \
+    && rm -f gurobi_server${GRB_VERSION}_$GRB_PLATFORM.tar.gz \
     && mv -f gurobi_server* gurobi_server \
-    && rm -rf gurobi/linux64/docs
-
+    && rm -rf gurobi_server/$GRB_PLATFORM/docs \
+    && mv -f gurobi_server/$GRB_PLATFORM*  gurobi_server/linux
 # After the file renaming, a clean image is built
 
 FROM ubuntu:20.04 AS packagemanager
@@ -38,18 +50,18 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /opt/gurobi_server
-COPY --from=buildmanager /opt/gurobi_server/linux64/bin/grb_rsm ./linux64/bin/grb_rsm
-COPY --from=buildmanager /opt/gurobi_server/linux64/bin/grbcluster ./linux64/bin/grbcluster
-COPY --from=buildmanager /opt/gurobi_server/linux64/bin/grb_rsm.cnf ./linux64/bin/grb_rsm.cnf
-COPY --from=buildmanager /opt/gurobi_server/linux64/resources/grb_rsm ./linux64/resources/grb_rsm
-COPY --from=buildmanager /opt/gurobi_server/linux64/EULA.pdf ./linux64/EULA.pdf
+COPY --from=buildmanager /opt/gurobi_server/linux/bin/grb_rsm ./linux/bin/grb_rsm
+COPY --from=buildmanager /opt/gurobi_server/linux/bin/grbcluster ./linux/bin/grbcluster
+COPY --from=buildmanager /opt/gurobi_server/linux/bin/grb_rsm.cnf ./linux/bin/grb_rsm.cnf
+COPY --from=buildmanager /opt/gurobi_server/linux/resources/grb_rsm ./linux/resources/grb_rsm
+COPY --from=buildmanager /opt/gurobi_server/linux/EULA.pdf ./linux/EULA.pdf
 
-ENV GRB_HOME=/opt/gurobi_server/linux64
+ENV GRB_HOME=/opt/gurobi_server/linux
 ENV PATH $GRB_HOME/bin:$PATH
 WORKDIR $GRB_HOME/bin
 # changes group permissions to run as a non-root user for better security
-RUN chgrp -R 0 /opt/gurobi_server/linux64/bin && \
-    chmod -R g=u /opt/gurobi_server/linux64/bin
+RUN chgrp -R 0 /opt/gurobi_server/linux/bin && \
+    chmod -R g=u /opt/gurobi_server/linux/bin
 # User to run the container
 USER 1001
 # expose command line
