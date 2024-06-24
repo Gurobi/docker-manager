@@ -14,8 +14,6 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         echo "linux64" > /platform.txt; \
     fi
 
-ENV GRB_PLATFORM=${GRB_PLATFORM}
-
 # install manager package and copy the files
 WORKDIR /opt
 
