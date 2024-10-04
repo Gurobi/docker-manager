@@ -85,7 +85,7 @@ spec:
     spec:
       containers:
         - name: gurobi-manager
-          image: gurobi/manager:12.0.0beta
+          image: gurobi/manager:12.0.0beta3
           ports:
             - containerPort: 61080
           livenessProbe:
@@ -132,7 +132,7 @@ spec:
             optional: true
       containers:
         - name: gurobi-compute
-          image: gurobi/compute:12.0.0beta
+          image: gurobi/compute:12.0.0beta3
           ports:
             - containerPort: 61000
           livenessProbe:
