@@ -3,7 +3,7 @@
 #
 
 FROM ubuntu:20.04 as buildmanager
-ARG GRB_VERSION=12.0.0beta
+ARG GRB_VERSION=12.0.0
 ARG GRB_SHORT_VERSION=12.0
 ARG TARGETPLATFORM
 
@@ -21,8 +21,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
       else \
         export GRB_PLATFORM="linux64"; \
     fi \
-    && wget -v https://download.gurobi.com/api/public/dl/YzN2b_KQ/gurobi_server${GRB_VERSION}_$GRB_PLATFORM.tar.gz \
-#    && wget -v https://packages.gurobi.com/${GRB_SHORT_VERSION}/gurobi_server${GRB_VERSION}_$GRB_PLATFORM.tar.gz \
+    && wget -v https://packages.gurobi.com/${GRB_SHORT_VERSION}/gurobi_server${GRB_VERSION}_$GRB_PLATFORM.tar.gz \
     && tar -xvf gurobi_server${GRB_VERSION}_$GRB_PLATFORM.tar.gz  \
     && rm *.tar.gz \
     && mv -f gurobi_server* gurobi_server \
@@ -37,7 +36,7 @@ LABEL vendor="Gurobi"
 LABEL version=${GRB_VERSION}
 
 # update system and certificates
-RUN apt-get update \
+RUN apt-get update -o Debug::Acquire::http=true \
     && apt-get install --no-install-recommends -y\
        ca-certificates  \
        p7zip-full \
