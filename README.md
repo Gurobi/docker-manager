@@ -6,8 +6,8 @@ Where to get help: [Gurobi Support](https://www.gurobi.com/support/), [Gurobi Do
 
 # Supported tags and respective Dockerfile links
 
-* [13.0.0beta1](https://github.com/Gurobi/docker-manager/blob/master/13.0.0/Dockerfile)
-* [12.0.3, latest](https://github.com/Gurobi/docker-manager/blob/master/12.0.3/Dockerfile)
+* [13.0.0, latest](https://github.com/Gurobi/docker-manager/blob/master/13.0.0/Dockerfile)
+* [12.0.3](https://github.com/Gurobi/docker-manager/blob/master/12.0.3/Dockerfile)
 * [12.0.2](https://github.com/Gurobi/docker-manager/blob/master/12.0.2/Dockerfile)
 * [12.0.1](https://github.com/Gurobi/docker-manager/blob/master/12.0.1/Dockerfile)
 * [12.0.0](https://github.com/Gurobi/docker-manager/blob/master/12.0.0/Dockerfile)
@@ -191,7 +191,7 @@ Then you can access the logs of one instance of the Cluster Manager:
 % kubectl logs gurobi-manager-7f57dcc5bd-2vfn5 
 2024-03-05T16:12:51Z - info  : Gurobi Cluster Manager starting...
 2024-03-05T16:12:51Z - info  : Platform is linux64 (linux) - "Ubuntu 20.04.6 LTS"
-2024-03-05T16:12:51Z - info  : Version is 13.0.0 (build v13.0.0beta1)
+2024-03-05T16:12:51Z - info  : Version is 13.0.0 (build v13.0.0rc1)
 2024-03-05T16:12:51Z - info  : Connecting to database grb_rsm on 10.97.58.19:27017...
 2024-03-05T16:12:56Z - info  : Connected to database grb_rsm (version 7.0.6, host gurobi-mongo-9fbb76c7b-6hhb2)
 2024-03-05T16:12:57Z - info  : Default gurobi user created
@@ -213,7 +213,7 @@ As well as the logs of one of the Compute Server nodes:
  % kubectl logs gurobi-compute-547b4fb898-xhxc6
 2024-03-05T16:12:51Z - info  : Gurobi Remote Services starting...
 2024-03-05T16:12:51Z - info  : Platform is linux64 (linux) - "Ubuntu 20.04.6 LTS"
-2024-03-05T16:12:51Z - info  : Version is 13.0.0 (build v13.0.0beta1)
+2024-03-05T16:12:51Z - info  : Version is 13.0.0 (build v13.0.0rc1)
 2024-03-05T16:12:51Z - info  : Variable GRB_LICENSE_FILE is not set
 2024-03-05T16:12:51Z - info  : Using license file /opt/gurobi/gurobi.lic
 2024-03-05T16:12:51Z - info  : Server starting WLS license
