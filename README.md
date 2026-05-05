@@ -1,4 +1,4 @@
-<img src="logo.png" alt="Logo" title="Gurobi Optimization" />
+![Logo](https://cdn.bfldr.com/KUZMZM51/at/kts6jh5747mxmw5qxzb7vk5z/Horizontal_Default_Gradient_Bk.svg "Gurobi Optimization")
 # Quick reference
 Maintained by: [Gurobi Optimization](https://www.gurobi.com)
 
