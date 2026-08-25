@@ -260,7 +260,7 @@ high-end CPUs, adequate memory, and avoid resource contention:
    to the daemon set, we make sure no other pods will run on these nodes, unless they have the required toleration.
 
 A simple deployment file is provided as an
-[example](https://github.com/Gurobi/docker-manager/blob/master/12.0.3/daemonset.yaml).
+[example](https://github.com/Gurobi/docker-manager/blob/master/13.0.3/daemonset.yaml).
 
 # License
 
