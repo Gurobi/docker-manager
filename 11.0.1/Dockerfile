@@ -2,7 +2,7 @@
 # Docker file to create a Compute Server Node Manager
 #
 
-FROM ubuntu:20.04 as buildmanager
+FROM ubuntu:24.04 as buildmanager
 ARG GRB_VERSION=11.0.1
 ARG GRB_SHORT_VERSION=11.0
 ARG TARGETPLATFORM
@@ -31,7 +31,7 @@ RUN export GRB_PLATFORM=$(cat /platform.txt) && echo $GRB_PLATFORM \
     && mv -f gurobi_server/$GRB_PLATFORM*  gurobi_server/linux
 # After the file renaming, a clean image is built
 
-FROM ubuntu:20.04 AS packagemanager
+FROM ubuntu:24.04 AS packagemanager
 
 ARG GRB_VERSION=11.0.1
 
