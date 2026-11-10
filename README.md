@@ -6,9 +6,10 @@ Where to get help: [Gurobi Support](https://www.gurobi.com/support/), [Gurobi Do
 
 # Supported tags and respective Dockerfile links
 
-See Gurobi's [release and support history](https://support.gurobi.com/hc/en-us/articles/360048138771-Gurobi-release-and-support-history) for which versions are actively supported. All 11.0.x, 12.0.x, and 13.0.x images below are rebuilt on a regular basis to pick up updated base-image dependencies. Versions before 11.0.0 are no longer supported and are listed below for reference only — those images are not rebuilt, so any base-image vulnerabilities reported against them will not be patched.
+See Gurobi's [release and support history](https://support.gurobi.com/hc/en-us/articles/360048138771-Gurobi-release-and-support-history) for which versions are actively supported. All 11.0.x, 12.0.x, 13.0.x, and 14.0.x images below are rebuilt on a regular basis to pick up updated base-image dependencies. Versions before 11.0.0 are no longer supported and are listed below for reference only — those images are not rebuilt, so any base-image vulnerabilities reported against them will not be patched.
 
-* [13.0.3, latest](https://github.com/Gurobi/docker-manager/blob/master/13.0.3/Dockerfile)
+* [14.0.0, latest](https://github.com/Gurobi/docker-manager/blob/master/14.0.0/Dockerfile)
+* [13.0.3](https://github.com/Gurobi/docker-manager/blob/master/13.0.3/Dockerfile)
 * [13.0.2](https://github.com/Gurobi/docker-manager/blob/master/13.0.2/Dockerfile)
 * [13.0.1](https://github.com/Gurobi/docker-manager/blob/master/13.0.1/Dockerfile)
 * [13.0.0](https://github.com/Gurobi/docker-manager/blob/master/13.0.0/Dockerfile)
@@ -174,7 +175,7 @@ kubectl create secret generic gurobi-lic --from-file="gurobi.lic=$PWD/gurobi.lic
 
 Then you can start multiple pods for the Cluster Manager, the Mongo Database, and the Compute Server nodes.
 A simple deployment file is provided as an 
-[example](https://github.com/Gurobi/docker-manager/blob/master/13.0.3/k8s.yaml).
+[example](https://github.com/Gurobi/docker-manager/blob/master/14.0.0/k8s.yaml).
 To keep the demonstration simple, this deployment file will not persist the database.
 If you wish to do so, please refer to the [MongoDB documentation](https://www.mongodb.com/kubernetes)
 or a hosted solution (for example [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)).
@@ -231,7 +232,7 @@ As well as the logs of one of the Compute Server nodes:
 2024-03-05T16:12:51Z - info  : Using data directory /opt/gurobi_server/linux64/bin/data
 2024-03-05T16:12:51Z - info  : Data store created
 2024-03-05T16:12:51Z - info  : Node ID is d1fc142a-1c41-4abf-b832-0153186e658e
-2024-03-05T16:12:51Z - info  : Available runtimes: [11.0.0 11.0.1 11.0.2 11.0.3 12.0.0 12.0.1 12.0.2 12.0.3 13.0.0 13.0.1, 13.0.2, 13.0.3]
+2024-03-05T16:12:51Z - info  : Available runtimes: [11.0.0 11.0.1 11.0.2 11.0.3 12.0.0 12.0.1 12.0.2 12.0.3 13.0.0 13.0.1, 13.0.2, 13.0.3, 14.0.0]
 2024-03-05T16:12:51Z - info  : Public root is /opt/gurobi_server/linux64/resources/grb_rs/public
 2024-03-05T16:12:51Z - info  : Starting API server (HTTP) on port 61000...
 2024-03-05T16:12:51Z - info  : Accepting worker registration on port 39029...
@@ -264,7 +265,7 @@ high-end CPUs, adequate memory, and avoid resource contention:
    to the daemon set, we make sure no other pods will run on these nodes, unless they have the required toleration.
 
 A simple deployment file is provided as an
-[example](https://github.com/Gurobi/docker-manager/blob/master/13.0.3/daemonset.yaml).
+[example](https://github.com/Gurobi/docker-manager/blob/master/14.0.0/daemonset.yaml).
 
 # License
 
